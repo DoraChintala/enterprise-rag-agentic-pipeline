@@ -1,0 +1,38 @@
+# Local production-like stack: the RAG API + Qdrant vector DB.
+#
+#   docker compose up --build
+#
+# The API is reachable at http://localhost:3000 (UI + endpoints).
+# Qdrant is reachable at http://localhost:6333.
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - '6333:6333'
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ['CMD-SHELL', 'bash -c ":> /dev/tcp/127.0.0.1/6333" || exit 1']
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - PORT=3000
+      - PROVIDER=local
+      - VECTOR_STORE=qdrant
+      - QDRANT_URL=http://qdrant:6333
+      - QDRANT_COLLECTION=financial_docs
+      # To use OpenAI instead, set PROVIDER=openai and pass OPENAI_API_KEY.
+      # - PROVIDER=openai
+      # - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      qdrant:
+        condition: service_healthy
+
+volumes:
+  qdrant_data:

@@ -1,0 +1,15 @@
+node_modules
+dist
+reports
+.git
+.github
+.env
+.env.local
+*.log
+e2e
+tests
+docs
+*.md
+.vscode
+.idea
+.DS_Store
