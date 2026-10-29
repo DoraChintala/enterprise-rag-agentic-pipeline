@@ -69,6 +69,9 @@
                 <input id="agent-mode" type="checkbox" />
                 Agent
               </label>
+              <button id="clear-btn" type="button" class="clear-btn" title="Clear">
+                Clear
+              </button>
               <button id="ask-btn" type="submit">Ask</button>
             </form>
 
@@ -85,11 +88,17 @@
           <section id="answer-card" class="answer-card hidden" aria-live="polite">
             <div class="answer-head">
               <h2>Answer</h2>
-              <span id="meta" class="meta"></span>
+              <div class="answer-head-right">
+                <span id="meta" class="meta"></span>
+                <button id="close-answer" class="close-btn" title="Dismiss" type="button">×</button>
+              </div>
             </div>
             <p id="answer-text" class="answer-text"></p>
             <h3>Sources</h3>
             <ul id="citations"></ul>
+            <button id="ask-another" class="ask-another" type="button">
+              Ask another question
+            </button>
           </section>
         </section>
 

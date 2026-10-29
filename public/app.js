@@ -139,6 +139,20 @@ $$('.example').forEach((btn) => {
   });
 });
 
+// Clear the question box + hide the answer, ready for a fresh question.
+function resetAsk() {
+  $('question').value = '';
+  $('answer-card').classList.add('hidden');
+  $('answer-text').textContent = '';
+  $('citations').innerHTML = '';
+  $('meta').textContent = '';
+  $('question').focus();
+}
+
+$('clear-btn').addEventListener('click', resetAsk);
+$('close-answer').addEventListener('click', resetAsk);
+$('ask-another').addEventListener('click', resetAsk);
+
 async function ask() {
   const question = $('question').value.trim();
   if (!question) return;
