@@ -88,3 +88,17 @@ npx vite preview --outDir reports/e2e
 ```
 
 See [`e2e/README.md`](e2e/README.md) for the full list of E2E scenarios.
+
+## Deploy (live demo)
+
+The app is container-ready and deploys to [Render](https://render.com) via
+the included `render.yaml` (free tier, no API key needed — uses the local
+provider + in-memory store).
+
+1. Push this repo to GitHub.
+2. On Render: **New → Blueprint** → select this repo.
+3. Render reads `render.yaml`, builds the `Dockerfile`, and gives you a public URL.
+4. Health check: `GET /health`.
+
+For a stronger demo, set `PROVIDER=openai` + `OPENAI_API_KEY` and
+`VECTOR_STORE=qdrant` in the service environment.

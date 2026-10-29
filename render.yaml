@@ -1,0 +1,19 @@
+# Render.com deployment config.
+# Deploy: push this repo to GitHub, then on render.com -> New -> Blueprint
+# -> pick this repo. Render reads this file and builds from the Dockerfile.
+services:
+  - type: web
+    name: enterprise-rag
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: PROVIDER
+        value: local # free, no API key needed for the demo
+      - key: VECTOR_STORE
+        value: memory # in-memory store; no external DB to provision
+      - key: LOG_LEVEL
+        value: info
