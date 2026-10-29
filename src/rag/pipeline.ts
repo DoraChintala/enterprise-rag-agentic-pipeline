@@ -23,7 +23,7 @@ export class RagPipeline {
     this.cache = new SemanticCache(provider);
   }
 
-  async answer(question: string): Promise<RagAnswer> {
+  async answer(question: string, role?: string): Promise<RagAnswer> {
     const started = Date.now();
 
     // 1. Cache-first (fast path)
@@ -50,7 +50,7 @@ export class RagPipeline {
     }
 
     // 3. Build prompt + 4. Generate
-    const prompt = buildPrompt(question, chunks);
+    const prompt = buildPrompt(question, chunks, role);
     const text = await this.provider.chat(prompt);
 
     // 5. Citations (auditability requirement)

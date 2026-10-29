@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sign in — Enterprise RAG</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body class="login-body">
+    <div class="login-card">
+      <div class="login-brand">
+        <span class="brand-icon" aria-hidden="true">📊</span>
+        <div class="brand-text">
+          <strong>Enterprise RAG</strong>
+          <small>Financial Documents Q&amp;A</small>
+        </div>
+      </div>
+
+      <h1 class="login-title">Welcome back</h1>
+      <p class="login-sub">Sign in and choose your role to get started.</p>
+
+      <form id="login-form" autocomplete="off">
+        <label for="name">Your name</label>
+        <input id="name" type="text" placeholder="Dora Chintala" required />
+
+        <label for="role">Role</label>
+        <select id="role" required>
+          <option value="" disabled selected>Select your role…</option>
+          <option value="Financial Analyst">Financial Analyst</option>
+          <option value="Portfolio Manager">Portfolio Manager</option>
+          <option value="Investment Banker">Investment Banker</option>
+          <option value="Tech Lead">Tech Lead</option>
+          <option value="Compliance Officer">Compliance Officer</option>
+        </select>
+
+        <p class="role-hint" id="role-hint">
+          Your role tailors example questions and how answers are framed —
+          answers always stay grounded in your documents.
+        </p>
+
+        <button type="submit" class="login-btn">Continue</button>
+      </form>
+
+      <p class="login-foot">
+        Grounded answers · Source citations · No hallucinations
+      </p>
+    </div>
+
+    <script src="/login.js"></script>
+  </body>
+</html>

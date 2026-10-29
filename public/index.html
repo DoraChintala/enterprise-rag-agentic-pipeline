@@ -3,69 +3,140 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Enterprise RAG — Financial Document Assistant</title>
+    <title>Enterprise RAG — Financial Documents Q&A</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <header>
-      <h1>Financial Document Assistant</h1>
-      <p class="subtitle">
-        Ask questions over your documents — every answer is source-cited.
-      </p>
-      <span id="health" class="badge" aria-live="polite">checking…</span>
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-icon" aria-hidden="true">📊</span>
+        <div class="brand-text">
+          <strong>Enterprise RAG</strong>
+          <small>Financial Documents Q&amp;A</small>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span id="health" class="health-dot" title="API status"></span>
+        <button class="link-btn" type="button">
+          <span aria-hidden="true">？</span> Help
+        </button>
+        <div class="user">
+          <span class="avatar">DC</span>
+          <span class="user-name">Dora Chintala</span>
+        </div>
+        <button id="logout-btn" class="link-btn" type="button">Sign out</button>
+      </div>
     </header>
 
-    <main>
-      <!-- Ingest -->
-      <section class="card">
-        <h2>1. Add a document</h2>
-        <label for="source">Source name</label>
-        <input id="source" type="text" placeholder="acme-10k-2024.pdf" />
-        <label for="doc-text">Document text</label>
-        <textarea
-          id="doc-text"
-          rows="6"
-          placeholder="Paste document text here (e.g. an earnings summary)…"
-        ></textarea>
-        <button id="ingest-btn">Ingest document</button>
-        <p id="ingest-status" class="status" role="status"></p>
-      </section>
+    <div class="layout">
+      <!-- Sidebar -->
+      <nav class="sidebar">
+        <button class="nav-item active" data-view="home">
+          <span aria-hidden="true">🏠</span> Home
+        </button>
+        <button class="nav-item" data-view="documents">
+          <span aria-hidden="true">📄</span> Documents
+        </button>
+        <button class="nav-item" data-view="companies">
+          <span aria-hidden="true">🏢</span> Companies
+        </button>
+        <button class="nav-item" data-view="recent">
+          <span aria-hidden="true">🕑</span> Recent
+        </button>
+      </nav>
 
-      <!-- Ask -->
-      <section class="card">
-        <h2>2. Ask a question</h2>
-        <label for="question">Question</label>
-        <input
-          id="question"
-          type="text"
-          placeholder="What was Acme revenue in 2024?"
-        />
-        <div class="row">
-          <label class="checkbox">
-            <input id="agent-mode" type="checkbox" />
-            Multi-step (agent) mode
-          </label>
-          <button id="ask-btn">Ask</button>
-        </div>
-        <p id="ask-status" class="status" role="status"></p>
-      </section>
+      <!-- Main -->
+      <main class="content">
+        <!-- HOME / ASK VIEW -->
+        <section id="view-home" class="view">
+          <div class="hero">
+            <h1>Ask a question about<br />financial documents</h1>
+            <p class="hero-sub">
+              Get clear, source-cited answers from 10-Ks, 10-Qs, earnings
+              calls, and research reports.
+            </p>
 
-      <!-- Answer -->
-      <section id="answer-card" class="card hidden" aria-live="polite">
-        <h2>Answer</h2>
-        <p id="answer-text" class="answer"></p>
-        <div id="meta" class="meta"></div>
-        <h3>Citations</h3>
-        <ul id="citations"></ul>
-      </section>
-    </main>
+            <form id="ask-form" class="search-bar" autocomplete="off">
+              <span class="search-icon" aria-hidden="true">🔍</span>
+              <input
+                id="question"
+                type="text"
+                placeholder="Type your question here..."
+                aria-label="Your question"
+              />
+              <label class="agent-toggle" title="Multi-step reasoning">
+                <input id="agent-mode" type="checkbox" />
+                Agent
+              </label>
+              <button id="ask-btn" type="submit">Ask</button>
+            </form>
 
-    <footer>
-      <a href="https://github.com/DoraChintala/enterprise-rag-agentic-pipeline"
-        >GitHub</a
-      >
-      · RAG + Agentic pipeline · TypeScript
-    </footer>
+            <p class="examples-label">Try these examples</p>
+            <div class="examples">
+              <button class="example">Summarize Acme's latest 10-K</button>
+              <button class="example">What are the key risk factors?</button>
+              <button class="example">Compare Acme revenue vs Globex</button>
+              <button class="example">How did net income change?</button>
+            </div>
+          </div>
+
+          <!-- Answer -->
+          <section id="answer-card" class="answer-card hidden" aria-live="polite">
+            <div class="answer-head">
+              <h2>Answer</h2>
+              <span id="meta" class="meta"></span>
+            </div>
+            <p id="answer-text" class="answer-text"></p>
+            <h3>Sources</h3>
+            <ul id="citations"></ul>
+          </section>
+        </section>
+
+        <!-- DOCUMENTS VIEW -->
+        <section id="view-documents" class="view hidden">
+          <h1 class="view-title">Documents</h1>
+          <p class="view-sub">
+            Add a document to the knowledge base. It is chunked, embedded,
+            and indexed for retrieval.
+          </p>
+          <div class="panel">
+            <label for="source">Source name</label>
+            <input id="source" type="text" placeholder="acme-10k-2024.pdf" />
+            <label for="doc-text">Document text</label>
+            <textarea
+              id="doc-text"
+              rows="7"
+              placeholder="Paste document text here (e.g. an earnings summary)…"
+            ></textarea>
+            <button id="ingest-btn" type="button">Ingest document</button>
+            <p id="ingest-status" class="status" role="status"></p>
+          </div>
+          <div id="doc-list-wrap" class="panel">
+            <h3>Ingested this session</h3>
+            <ul id="doc-list" class="doc-list">
+              <li class="empty">No documents yet.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- COMPANIES / RECENT (simple placeholders wired to real data) -->
+        <section id="view-companies" class="view hidden">
+          <h1 class="view-title">Companies</h1>
+          <p class="view-sub">Sources grouped by document.</p>
+          <ul id="company-list" class="doc-list">
+            <li class="empty">Ingest documents to see them here.</li>
+          </ul>
+        </section>
+
+        <section id="view-recent" class="view hidden">
+          <h1 class="view-title">Recent questions</h1>
+          <ul id="recent-list" class="doc-list">
+            <li class="empty">Your recent questions will appear here.</li>
+          </ul>
+        </section>
+      </main>
+    </div>
 
     <script src="/app.js"></script>
   </body>

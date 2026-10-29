@@ -19,6 +19,8 @@ const ingestSchema = z.object({
 
 const querySchema = z.object({
   question: z.string().min(1),
+  // Optional persona. Changes how the answer is FRAMED, never the facts.
+  role: z.string().max(60).optional(),
 });
 
 /**
@@ -63,7 +65,7 @@ export async function buildApp(deps: {
     if (!parsed.success) {
       return reply.status(400).send({ error: parsed.error.flatten() });
     }
-    const answer = await rag.answer(parsed.data.question);
+    const answer = await rag.answer(parsed.data.question, parsed.data.role);
     return reply.send(answer);
   });
 
