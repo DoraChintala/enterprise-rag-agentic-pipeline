@@ -10,7 +10,7 @@ async function main() {
   const store = createStore();
   await store.init();
 
-  const app = await buildApp({ provider, store });
+  const app = await buildApp({ provider, store, serveUi: true });
 
   await app.listen({ port: config.port, host: '0.0.0.0' });
   logger.info(

@@ -1,4 +1,7 @@
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 import cors from '@fastify/cors';
+import fastifyStatic from '@fastify/static';
 import Fastify, { type FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { logger } from '../core/logger.js';
@@ -25,9 +28,18 @@ const querySchema = z.object({
 export async function buildApp(deps: {
   provider: Provider;
   store: VectorStore;
+  serveUi?: boolean;
 }): Promise<FastifyInstance> {
   const app = Fastify({ logger: false });
   await app.register(cors, { origin: true });
+
+  // Serve the static UI from /public (enabled in the real server, off in tests).
+  if (deps.serveUi) {
+    // app.ts lives at <root>/src/api -> go up two levels to <root>/public
+    const here = dirname(fileURLToPath(import.meta.url));
+    const publicDir = join(here, '..', '..', 'public');
+    await app.register(fastifyStatic, { root: publicDir, prefix: '/' });
+  }
 
   const rag = new RagPipeline(deps.provider, deps.store);
   const agent = new AgentOrchestrator(rag);
