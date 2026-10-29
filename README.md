@@ -31,8 +31,8 @@ Financial analysts drown in long, dense, constantly-updated documents
 🚧 In progress — learning + building in public.
 
 - [x] Stage 1 — Requirements
-- [ ] Stage 2 — Scale & Constraints
-- [ ] Stage 3 — High-Level Architecture
+- [x] Stage 2 — Scale & Constraints
+- [x] Stage 3 — High-Level Architecture
 - [ ] Stage 4 — Ingestion Pipeline
 - [ ] Stage 5 — Retrieval + RAG Core
 - [ ] Stage 6 — Agentic Layer
