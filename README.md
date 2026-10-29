@@ -33,11 +33,11 @@ Financial analysts drown in long, dense, constantly-updated documents
 - [x] Stage 1 — Requirements
 - [x] Stage 2 — Scale & Constraints
 - [x] Stage 3 — High-Level Architecture
-- [ ] Stage 4 — Ingestion Pipeline
-- [ ] Stage 5 — Retrieval + RAG Core
-- [ ] Stage 6 — Agentic Layer
-- [ ] Stage 7 — API, Scaling, Reliability
-- [ ] Stage 8 — DevOps, Monitoring, Trade-offs
+- [x] Stage 4 — Ingestion Pipeline (chunker + embeddings + store)
+- [x] Stage 5 — Retrieval + RAG Core (search, prompt, citations, cache)
+- [x] Stage 6 — Agentic Layer (multi-step orchestrator)
+- [x] Stage 7 — API, Scaling, Reliability (Fastify API, async-ready, health checks)
+- [x] Stage 8 — DevOps, Monitoring, Trade-offs (Docker, docker-compose, CI/CD)
 
 See [`docs/system-design.md`](docs/system-design.md) for the full design log.
 See [`docs/architecture.md`](docs/architecture.md) for the architecture + flow diagrams.

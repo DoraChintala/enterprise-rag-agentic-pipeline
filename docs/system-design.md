@@ -208,3 +208,42 @@ Raw files             = 50,000 × 50 MB = 2.5 TB (object storage, not vector DB)
 - LangChain is glue inside the App Service / Worker, not a separate box.
 
 > Architecture + sequence diagrams: see [`architecture.md`](architecture.md).
+
+---
+
+## Stages 4–8 — Implementation Notes
+
+These stages were implemented in code (see `src/`). Summary of the decisions:
+
+### Stage 4 — Ingestion Pipeline (`src/rag/`)
+- `chunker.ts`: word-based chunks with **overlap** so meaning is not lost at
+  boundaries; each chunk carries `docId`, `source`, `position` for **citations**.
+- `ingest.ts`: parse → chunk → **embed (batched)** → store.
+
+### Stage 5 — Retrieval + RAG Core (`src/rag/`)
+- `retrieve.ts`: embed the question, top-k similarity search.
+- `prompt.ts`: grounded prompt — answer ONLY from context, never invent numbers.
+- `pipeline.ts`: cache → retrieve → prompt → generate → **attach citations**.
+- `cache.ts`: **semantic cache** keyed by question embedding (perceived latency).
+
+### Stage 6 — Agentic Layer (`src/agents/orchestrator.ts`)
+- Detects multi-step/comparison questions, splits into sub-questions,
+  answers each via the pipeline, then combines results + merges citations.
+
+### Stage 7 — API, Scaling, Reliability (`src/api/app.ts`)
+- Fastify API: `/health`, `/ingest`, `/query`, `/agent` + static UI.
+- Zod request validation; central error handler.
+- Pluggable providers (local/OpenAI) and stores (memory/Qdrant) via factories,
+  so the system scales from a laptop to Qdrant without code changes.
+
+### Stage 8 — DevOps, Monitoring, Trade-offs
+- **Dockerfile**: multi-stage build, non-root user, container healthcheck.
+- **docker-compose.yml**: API + Qdrant with a healthcheck dependency.
+- **CI** (`.github/workflows/ci.yml`): typecheck → unit tests → E2E tests →
+  build → Docker image build, with test reports uploaded as artifacts.
+
+### Trade-offs recorded
+- Local provider gives a zero-cost, no-key demo path; OpenAI gives real quality.
+- In-memory store is great for tests/demo; Qdrant is the production path.
+- UI is intentionally framework-free (zero build) to keep the focus on the
+  backend + AI pipeline.
