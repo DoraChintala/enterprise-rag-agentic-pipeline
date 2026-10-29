@@ -40,3 +40,48 @@ Financial analysts drown in long, dense, constantly-updated documents
 - [ ] Stage 8 — DevOps, Monitoring, Trade-offs
 
 See [`docs/system-design.md`](docs/system-design.md) for the full design log.
+See [`docs/architecture.md`](docs/architecture.md) for the architecture + flow diagrams.
+
+## Run it locally
+
+```bash
+npm install          # install dependencies
+cp .env.example .env # defaults: local provider + in-memory store (no API key)
+
+npm run ingest       # demo: ingest a sample 10-K + ask a question
+npm run dev          # start the API on http://localhost:3000
+```
+
+Try the API:
+
+```bash
+curl -s localhost:3000/health
+
+curl -s -X POST localhost:3000/ingest \
+  -H 'content-type: application/json' \
+  -d '{"text":"Acme revenue in 2024 was 5.2 billion dollars.","source":"acme.pdf"}'
+
+curl -s -X POST localhost:3000/query \
+  -H 'content-type: application/json' \
+  -d '{"question":"What was Acme revenue in 2024?"}'
+```
+
+By default it runs with a free local provider and an in-memory vector store.
+Set `PROVIDER=openai` (+ `OPENAI_API_KEY`) and `VECTOR_STORE=qdrant` for the
+production path.
+
+## Testing
+
+```bash
+npm run test       # unit tests (chunker, pipeline)
+npm run test:e2e   # end-to-end tests (real HTTP server, all endpoints)
+npm run test:all   # both
+```
+
+Reports (HTML + JSON + JUnit) are written to `reports/`. View the HTML report:
+
+```bash
+npx vite preview --outDir reports/e2e
+```
+
+See [`e2e/README.md`](e2e/README.md) for the full list of E2E scenarios.
