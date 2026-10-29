@@ -49,8 +49,11 @@ npm install          # install dependencies
 cp .env.example .env # defaults: local provider + in-memory store (no API key)
 
 npm run ingest       # demo: ingest a sample 10-K + ask a question
-npm run dev          # start the API on http://localhost:3000
+npm run dev          # start the API + UI on http://localhost:3000
 ```
+
+Open http://localhost:3000 in a browser for the web UI: ingest a document,
+ask a question, and see the answer with its citations.
 
 Try the API:
 
