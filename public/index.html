@@ -100,16 +100,32 @@
             Add a document to the knowledge base. It is chunked, embedded,
             and indexed for retrieval.
           </p>
+          <!-- Option A: upload a file -->
           <div class="panel">
+            <h3 class="panel-head">Upload a file</h3>
+            <div id="dropzone" class="dropzone" tabindex="0">
+              <span class="dropzone-icon" aria-hidden="true">📄</span>
+              <p class="dropzone-text">
+                <strong>Click to choose a file</strong> or drag &amp; drop
+              </p>
+              <p class="dropzone-hint">PDF or text files · up to 50 MB</p>
+              <input id="file-input" type="file" accept=".pdf,.txt,.md,.csv,.json,.html" hidden />
+            </div>
+            <p id="upload-status" class="status" role="status"></p>
+          </div>
+
+          <!-- Option B: paste text -->
+          <div class="panel">
+            <h3 class="panel-head">Or paste text</h3>
             <label for="source">Source name</label>
             <input id="source" type="text" placeholder="acme-10k-2024.pdf" />
             <label for="doc-text">Document text</label>
             <textarea
               id="doc-text"
-              rows="7"
+              rows="6"
               placeholder="Paste document text here (e.g. an earnings summary)…"
             ></textarea>
-            <button id="ingest-btn" type="button">Ingest document</button>
+            <button id="ingest-btn" type="button">Ingest text</button>
             <p id="ingest-status" class="status" role="status"></p>
           </div>
           <div id="doc-list-wrap" class="panel">

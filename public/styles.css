@@ -548,3 +548,41 @@ body {
   border-radius: 999px;
   margin-left: 0.4rem;
 }
+
+/* ---- File upload dropzone ---- */
+.panel-head {
+  margin: 0 0 0.75rem;
+  font-size: 0.95rem;
+}
+
+.dropzone {
+  border: 2px dashed var(--border);
+  border-radius: 10px;
+  padding: 2rem 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.dropzone:hover,
+.dropzone:focus,
+.dropzone.dragover {
+  border-color: var(--accent);
+  background: rgba(47, 111, 237, 0.04);
+  outline: none;
+}
+
+.dropzone-icon {
+  font-size: 1.8rem;
+}
+
+.dropzone-text {
+  margin: 0.5rem 0 0.25rem;
+  font-size: 0.95rem;
+}
+
+.dropzone-hint {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--muted);
+}

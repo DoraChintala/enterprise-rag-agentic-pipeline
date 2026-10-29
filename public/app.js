@@ -267,7 +267,80 @@ function renderRecent() {
     .join('');
 }
 
+// ---------- File upload (Documents view) ----------
+function wireUpload() {
+  const dz = $('dropzone');
+  const input = $('file-input');
+  if (!dz || !input) return;
+
+  // Click the zone -> open the OS file picker.
+  dz.addEventListener('click', () => input.click());
+  dz.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      input.click();
+    }
+  });
+
+  // File chosen via the picker.
+  input.addEventListener('change', () => {
+    if (input.files && input.files[0]) uploadFile(input.files[0]);
+  });
+
+  // Drag & drop.
+  ['dragenter', 'dragover'].forEach((ev) =>
+    dz.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dz.classList.add('dragover');
+    })
+  );
+  ['dragleave', 'drop'].forEach((ev) =>
+    dz.addEventListener(ev, (e) => {
+      e.preventDefault();
+      dz.classList.remove('dragover');
+    })
+  );
+  dz.addEventListener('drop', (e) => {
+    const file = e.dataTransfer?.files?.[0];
+    if (file) uploadFile(file);
+  });
+}
+
+async function uploadFile(file) {
+  const status = $('upload-status');
+  status.textContent = `Uploading "${file.name}"…`;
+  status.className = 'status';
+
+  const form = new FormData();
+  form.append('file', file);
+
+  try {
+    const res = await fetch('/upload', { method: 'POST', body: form });
+    const body = await res.json().catch(() => ({}));
+
+    if (res.status === 201) {
+      status.textContent = `Ingested "${file.name}" — ${body.chunks} chunk(s).`;
+      status.className = 'status ok';
+      state.docs.unshift({
+        source: file.name,
+        chunks: body.chunks,
+        docId: body.docId,
+      });
+      renderDocs();
+    } else {
+      status.textContent = body.error
+        ? `Upload failed: ${body.error}`
+        : 'Upload failed.';
+      status.className = 'status err';
+    }
+  } catch {
+    status.textContent = 'Upload failed (network error).';
+    status.className = 'status err';
+  }
+}
+
 // ---------- Init ----------
 applyUser();
 wireLogout();
+wireUpload();
 checkHealth();
