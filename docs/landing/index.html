@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AgentIQ — Agentic AI Platform</title>
+    <meta
+      name="description"
+      content="An agentic RAG platform with evaluation, trajectory capture, cross-run memory, permissioning, and cost governance. Grounded, source-cited answers."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Nav -->
+    <header class="nav">
+      <div class="brand">
+        <span class="logo">AGENTIQ</span>
+        <span class="tag">Agentic AI Platform</span>
+      </div>
+      <div class="nav-links">
+        <a class="btn btn-ghost" href="#metrics">Results</a>
+        <a
+          class="btn btn-primary"
+          href="https://enterprise-rag-d2wk.onrender.com"
+          target="_blank"
+          rel="noopener"
+          >Try Live Demo ↗</a
+        >
+        <a
+          class="btn btn-ghost"
+          href="https://github.com/DoraChintala/enterprise-rag-agentic-pipeline"
+          target="_blank"
+          rel="noopener"
+          >View Code ↗</a
+        >
+      </div>
+    </header>
+
+    <!-- Hero / Story -->
+    <section class="hero">
+      <p class="eyebrow">RETRIEVAL · AGENTS · GROUNDED ANSWERS</p>
+      <h1>An agentic platform that answers<br /><span class="accent">grounded in your documents.</span></h1>
+      <p class="lead">
+        Upload any document. Ask in plain English. Get a source-cited answer —
+        never a hallucinated one. Behind it: an agent that plans and calls
+        tools, an evaluation loop that measures quality, cross-run memory,
+        permissioning, and cost governance.
+      </p>
+      <div class="hero-cta">
+        <a
+          class="btn btn-primary btn-lg"
+          href="https://enterprise-rag-d2wk.onrender.com"
+          target="_blank"
+          rel="noopener"
+          >Try the Live Demo ↗</a
+        >
+        <a
+          class="btn btn-outline btn-lg"
+          href="https://github.com/DoraChintala/enterprise-rag-agentic-pipeline"
+          target="_blank"
+          rel="noopener"
+          >View the Code ↗</a
+        >
+      </div>
+      <p class="note">The live demo runs on free hosting — first load may take ~30s to wake.</p>
+    </section>
+
+    <!-- The problem/solution story -->
+    <section class="section">
+      <h2>The problem it solves</h2>
+      <div class="story-grid">
+        <div class="story-card bad">
+          <h3>Generic LLMs in a document workflow</h3>
+          <ul>
+            <li>Don't know your private documents</li>
+            <li>Hallucinate facts and numbers</li>
+            <li>Can't show where an answer came from</li>
+          </ul>
+        </div>
+        <div class="story-card good">
+          <h3>AgentIQ</h3>
+          <ul>
+            <li>Retrieves from YOUR documents (RAG)</li>
+            <li>Answers only from context — cites every claim</li>
+            <li>Captures a replayable trace of each run</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Metrics -->
+    <section class="section" id="metrics">
+      <h2>Results &amp; metrics</h2>
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-num">38</div>
+          <div class="metric-label">tests passing</div>
+          <div class="metric-sub">20 unit · 18 e2e</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num ok">100%</div>
+          <div class="metric-label">eval accuracy</div>
+          <div class="metric-sub">labeled suite</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num ok">100%</div>
+          <div class="metric-label">groundedness</div>
+          <div class="metric-sub">every answer cited</div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">&lt;2ms</div>
+          <div class="metric-label">p95 latency</div>
+          <div class="metric-sub">retrieval path</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section class="section">
+      <h2>Platform capabilities</h2>
+      <div class="caps">
+        <div class="cap"><span class="chk">✓</span> Agent runtime — plan → call tool → observe → iterate</div>
+        <div class="cap"><span class="chk">✓</span> Evaluation loop — accuracy · groundedness · latency</div>
+        <div class="cap"><span class="chk">✓</span> Trajectory capture — structured, replayable runs</div>
+        <div class="cap"><span class="chk">✓</span> Cross-run memory — improves from experience</div>
+        <div class="cap"><span class="chk">✓</span> Identity &amp; permissioning — tool-scope enforcement</div>
+        <div class="cap"><span class="chk">✓</span> Cost governance — per-run token/cost budget</div>
+        <div class="cap"><span class="chk">✓</span> Multi-format ingest — PDF, DOCX, HTML, CSV, text</div>
+        <div class="cap"><span class="chk">✓</span> Docker · CI/CD · deployed live demo</div>
+      </div>
+    </section>
+
+    <!-- Proof -->
+    <section class="section">
+      <h2>Live proof: permissioning blocks an unauthorized tool</h2>
+      <p class="proof-caption">
+        A read-only "Compliance Officer" identity tries a multi-step query —
+        the planner tool is blocked and recorded in the trajectory.
+      </p>
+      <pre class="code-block"><span class="c-dim">GET /trajectory/&lt;runId&gt;   role: Compliance Officer</span>
+
+step 0 · tool: planner
+        <span class="c-red">guardrail: "block"</span>   ← denied (no tool:planner scope)
+step 1 · tool: rag
+        <span class="c-green">guardrail: "allow"</span>   observation: "Acme 5.2B, Globex 3.8B (1 citation)"
+step 2 · final
+        outcome: "success"   cost: { tokens: 33, est: $0.000017 }
+        <span class="c-accent">blocked: ["planner"]   steps: 1</span></pre>
+    </section>
+
+    <!-- Tech -->
+    <section class="section">
+      <h2>Built with</h2>
+      <div class="tech">
+        <span>TypeScript</span><span>Node.js / Fastify</span><span>Vector Search</span>
+        <span>Zod</span><span>Vitest</span><span>Docker</span><span>GitHub Actions CI/CD</span>
+        <span>Render</span>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <a href="https://enterprise-rag-d2wk.onrender.com" target="_blank" rel="noopener">Live Demo</a>
+      ·
+      <a href="https://github.com/DoraChintala/enterprise-rag-agentic-pipeline" target="_blank" rel="noopener">GitHub</a>
+      <p>Built by Dora Chintala · Agentic AI Platform</p>
+    </footer>
+  </body>
+</html>
