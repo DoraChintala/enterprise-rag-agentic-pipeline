@@ -1,8 +1,13 @@
 # Enterprise RAG & Agentic Pipeline
 
 An end-to-end Retrieval-Augmented Generation (RAG) and agentic system for
-answering natural-language questions over large financial document sets —
-with **source-cited answers** and production DevOps infrastructure.
+answering natural-language questions over documents — with **source-cited
+answers**, agent evaluation, trajectory capture, memory, permissioning, and
+cost governance.
+
+**🔗 [Landing page](https://dorachintala.github.io/enterprise-rag-agentic-pipeline/)**
+· **[Live demo](https://enterprise-rag-d2wk.onrender.com)**
+· **[Code](https://github.com/DoraChintala/enterprise-rag-agentic-pipeline)**
 
 > Built in public as a Bloomberg-style system design + implementation exercise.
 
