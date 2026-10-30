@@ -3,24 +3,19 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Enterprise RAG — Financial Documents Q&A</title>
+    <title>AgentIQ — Agentic AI Platform</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <!-- Top bar -->
     <header class="topbar">
       <div class="brand">
-        <span class="brand-icon" aria-hidden="true">📊</span>
-        <div class="brand-text">
-          <strong>Enterprise RAG</strong>
-          <small>Financial Documents Q&amp;A</small>
-        </div>
+        <span class="brand-logo" aria-hidden="true">AGENTIQ</span>
+        <span class="brand-tag">Agentic AI Platform</span>
       </div>
       <div class="topbar-right">
         <span id="health" class="health-dot" title="API status"></span>
-        <button class="link-btn" type="button">
-          <span aria-hidden="true">？</span> Help
-        </button>
+        <button class="link-btn" type="button">Help</button>
         <div class="user">
           <span class="avatar">DC</span>
           <span class="user-name">Dora Chintala</span>
@@ -33,16 +28,16 @@
       <!-- Sidebar -->
       <nav class="sidebar">
         <button class="nav-item active" data-view="home">
-          <span aria-hidden="true">🏠</span> Home
+          <span class="nav-icon" aria-hidden="true">◎</span> Ask
         </button>
         <button class="nav-item" data-view="documents">
-          <span aria-hidden="true">📄</span> Documents
+          <span class="nav-icon" aria-hidden="true">▤</span> Knowledge
         </button>
         <button class="nav-item" data-view="companies">
-          <span aria-hidden="true">🏢</span> Companies
+          <span class="nav-icon" aria-hidden="true">◍</span> Sources
         </button>
         <button class="nav-item" data-view="recent">
-          <span aria-hidden="true">🕑</span> Recent
+          <span class="nav-icon" aria-hidden="true">↻</span> Activity
         </button>
       </nav>
 
@@ -51,21 +46,22 @@
         <!-- HOME / ASK VIEW -->
         <section id="view-home" class="view">
           <div class="hero">
-            <h1>Ask a question about<br />financial documents</h1>
+            <p class="eyebrow">RETRIEVAL · AGENTS · GROUNDED ANSWERS</p>
+            <h1>Ask anything.<br /><span class="accent">Grounded in your documents.</span></h1>
             <p class="hero-sub">
-              Get clear, source-cited answers from 10-Ks, 10-Qs, earnings
-              calls, and research reports.
+              An agentic RAG platform that plans, retrieves, and answers —
+              with a source citation for every claim. No hallucinations.
             </p>
 
             <form id="ask-form" class="search-bar" autocomplete="off">
-              <span class="search-icon" aria-hidden="true">🔍</span>
+              <span class="search-icon" aria-hidden="true">⌕</span>
               <input
                 id="question"
                 type="text"
-                placeholder="Type your question here..."
+                placeholder="Ask a question about your documents..."
                 aria-label="Your question"
               />
-              <label class="agent-toggle" title="Multi-step reasoning">
+              <label class="agent-toggle" title="Multi-step agent reasoning">
                 <input id="agent-mode" type="checkbox" />
                 Agent
               </label>
@@ -75,9 +71,9 @@
               <button id="ask-btn" type="submit">Ask</button>
             </form>
 
-            <p class="examples-label">Try these examples</p>
+            <p class="examples-label">TRY AN EXAMPLE</p>
             <div class="examples">
-              <button class="example">Summarize Acme's latest 10-K</button>
+              <button class="example">Summarize the latest filing</button>
               <button class="example">What are the key risk factors?</button>
               <button class="example">Compare Acme revenue vs Globex</button>
               <button class="example">How did net income change?</button>
@@ -102,18 +98,18 @@
           </section>
         </section>
 
-        <!-- DOCUMENTS VIEW -->
+        <!-- KNOWLEDGE (Documents) VIEW -->
         <section id="view-documents" class="view hidden">
-          <h1 class="view-title">Documents</h1>
+          <h1 class="view-title">Knowledge Base</h1>
           <p class="view-sub">
-            Add a document to the knowledge base. It is chunked, embedded,
-            and indexed for retrieval.
+            Add documents to the agent's knowledge. Each is chunked, embedded,
+            and indexed for grounded retrieval.
           </p>
           <!-- Option A: upload a file -->
           <div class="panel">
             <h3 class="panel-head">Upload a file</h3>
             <div id="dropzone" class="dropzone" tabindex="0">
-              <span class="dropzone-icon" aria-hidden="true">📄</span>
+              <span class="dropzone-icon" aria-hidden="true">⇪</span>
               <p class="dropzone-text">
                 <strong>Click to choose a file</strong> or drag &amp; drop
               </p>
@@ -138,24 +134,25 @@
             <p id="ingest-status" class="status" role="status"></p>
           </div>
           <div id="doc-list-wrap" class="panel">
-            <h3>Ingested this session</h3>
+            <h3>Indexed this session</h3>
             <ul id="doc-list" class="doc-list">
               <li class="empty">No documents yet.</li>
             </ul>
           </div>
         </section>
 
-        <!-- COMPANIES / RECENT (simple placeholders wired to real data) -->
+        <!-- SOURCES / ACTIVITY -->
         <section id="view-companies" class="view hidden">
-          <h1 class="view-title">Companies</h1>
-          <p class="view-sub">Sources grouped by document.</p>
+          <h1 class="view-title">Sources</h1>
+          <p class="view-sub">Documents in the knowledge base.</p>
           <ul id="company-list" class="doc-list">
             <li class="empty">Ingest documents to see them here.</li>
           </ul>
         </section>
 
         <section id="view-recent" class="view hidden">
-          <h1 class="view-title">Recent questions</h1>
+          <h1 class="view-title">Activity</h1>
+          <p class="view-sub">Your recent questions this session.</p>
           <ul id="recent-list" class="doc-list">
             <li class="empty">Your recent questions will appear here.</li>
           </ul>
