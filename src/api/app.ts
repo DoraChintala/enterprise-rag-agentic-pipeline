@@ -48,7 +48,7 @@ export async function buildApp(deps: {
   }
 
   const rag = new RagPipeline(deps.provider, deps.store);
-  const agent = new AgentOrchestrator(rag);
+  const agent = new AgentOrchestrator(rag, deps.provider);
 
   // Health check (used by Docker/K8s probes in Stage 8)
   app.get('/health', async () => ({ status: 'ok' }));
@@ -108,7 +108,7 @@ export async function buildApp(deps: {
     return reply.send(answer);
   });
 
-  // Agentic endpoint (multi-step)
+  // Agentic endpoint (multi-step). Captures a trajectory + uses memory.
   app.post('/agent', async (request, reply) => {
     const parsed = querySchema.safeParse(request.body);
     if (!parsed.success) {
@@ -117,6 +117,22 @@ export async function buildApp(deps: {
     const answer = await agent.run(parsed.data.question);
     return reply.send(answer);
   });
+
+  // List recent run trajectories (replayable agent runs).
+  app.get('/trajectories', async () => ({
+    trajectories: agent.tracer.list(20),
+    memorySize: agent.memory.size(),
+  }));
+
+  // Fetch one run's full, replayable trajectory by id.
+  app.get<{ Params: { runId: string } }>(
+    '/trajectory/:runId',
+    async (request, reply) => {
+      const trace = agent.tracer.get(request.params.runId);
+      if (!trace) return reply.status(404).send({ error: 'run not found' });
+      return reply.send(trace);
+    }
+  );
 
   // Basic error handler
   app.setErrorHandler((err, _req, reply) => {

@@ -102,7 +102,24 @@ It reports **accuracy**, **groundedness** (answers backed by a citation —
 i.e. no hallucination), **p50/p95 latency**, and accuracy **by question
 type**. Re-run it after any change (prompt, chunking, retrieval) to catch
 regressions and prove the system is *measurably* better — not just
-different. See [`docs/agent-platform-design.md`](docs/agent-platform-design.md).
+different.
+
+## Agent trajectory + memory
+
+Every agent run (`POST /agent`) is captured as a structured, **replayable
+trajectory** — the plan, each tool call, each observation, and the outcome:
+
+```bash
+# run an agent query -> response includes a runId
+# then fetch the full trace:
+curl localhost:3000/trajectory/<runId>
+curl localhost:3000/trajectories   # recent runs + memory size
+```
+
+The agent also keeps **cross-run memory**: after each run it stores a
+summary + outcome, and recalls similar prior runs on the next question — so
+it improves from experience. See
+[`docs/agent-platform-design.md`](docs/agent-platform-design.md).
 
 ## Deploy (live demo)
 

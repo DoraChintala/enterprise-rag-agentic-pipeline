@@ -105,3 +105,43 @@ prompt, chunking, or retrieval changes.
 6. Eval gate + safe rollout (only ship a version that passes)
 7. Guardrail hooks (allow/block per step) + identity scopes
 ```
+
+---
+
+## Update — Trajectory Capture + Cross-Run Memory (shipped)
+
+Two more platform capabilities are now implemented (`src/agents/`):
+
+### Trajectory capture (`trajectory.ts`)
+- Every agent run gets a `runId` and a structured, replayable `Trajectory`:
+  the task, each step (thought + action + observation), per-step latency,
+  a per-step guardrail decision, and the final outcome.
+- `Tracer` records steps and exposes `get(runId)` and `list()` for replay.
+- Endpoints: `GET /trajectories` (recent runs) and
+  `GET /trajectory/:runId` (one full, replayable trace).
+
+### Cross-run memory (`memory.ts`)
+- After each run, `AgentMemory.remember()` stores a compact record
+  (task, summary, outcome) keyed by the task embedding.
+- Before a run, `AgentMemory.recall()` retrieves the most similar prior
+  runs so the agent benefits from past experience.
+- The `/agent` response now includes `runId` and `memoryUsed`.
+
+### Why this matches the platform requirement
+- "capture each run's full reasoning-and-tool-call trajectory as
+  structured, replayable data" → trajectory capture.
+- "memory that compounds across runs" → cross-run memory.
+- Together with the evaluation loop, the system now closes the
+  trajectory → evaluation → memory arc that makes agents measurably better.
+
+### Status (updated)
+| Component | Status |
+| --- | --- |
+| RAG as a capability | done |
+| Agent orchestrator (plan → tool → observe) | done |
+| Evaluation loop | done |
+| **Trajectory capture** | **done** |
+| **Cross-run memory** | **done** |
+| Formal tool registry / SDK | planned |
+| Eval-gated safe rollout | planned |
+| Identity scopes | partial (role) |
