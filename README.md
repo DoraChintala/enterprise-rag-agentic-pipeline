@@ -89,6 +89,21 @@ npx vite preview --outDir reports/e2e
 
 See [`e2e/README.md`](e2e/README.md) for the full list of E2E scenarios.
 
+## Evaluation loop
+
+A non-deterministic AI system needs a repeatable way to measure quality.
+The eval harness scores the pipeline against a labeled suite:
+
+```bash
+npm run eval
+```
+
+It reports **accuracy**, **groundedness** (answers backed by a citation —
+i.e. no hallucination), **p50/p95 latency**, and accuracy **by question
+type**. Re-run it after any change (prompt, chunking, retrieval) to catch
+regressions and prove the system is *measurably* better — not just
+different. See [`docs/agent-platform-design.md`](docs/agent-platform-design.md).
+
 ## Deploy (live demo)
 
 The app is container-ready and deploys to [Render](https://render.com) via
