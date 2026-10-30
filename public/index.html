@@ -54,11 +54,25 @@
             </p>
 
             <form id="ask-form" class="search-bar" autocomplete="off">
-              <span class="search-icon" aria-hidden="true">⌕</span>
+              <button
+                id="attach-btn"
+                type="button"
+                class="attach-btn"
+                title="Upload a document"
+                aria-label="Upload a document"
+              >
+                📎
+              </button>
+              <input
+                id="search-file-input"
+                type="file"
+                accept=".pdf,.docx,.txt,.md,.csv,.json,.html,.xml"
+                hidden
+              />
               <input
                 id="question"
                 type="text"
-                placeholder="Ask a question about your documents..."
+                placeholder="Upload a document, then ask about it..."
                 aria-label="Your question"
               />
               <label class="agent-toggle" title="Multi-step agent reasoning">
@@ -70,6 +84,7 @@
               </button>
               <button id="ask-btn" type="submit">Ask</button>
             </form>
+            <p id="search-upload-status" class="search-upload-status" role="status"></p>
 
             <p class="examples-label">TRY AN EXAMPLE</p>
             <div class="examples">

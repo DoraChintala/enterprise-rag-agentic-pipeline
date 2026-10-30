@@ -6,6 +6,7 @@ import type {
   VectorStore,
 } from '../core/types.js';
 import { SemanticCache } from './cache.js';
+import { classifyDocument } from './classify.js';
 import { buildPrompt } from './prompt.js';
 import { retrieve } from './retrieve.js';
 
@@ -49,8 +50,13 @@ export class RagPipeline {
       };
     }
 
-    // 3. Build prompt + 4. Generate
-    const prompt = buildPrompt(question, chunks, role);
+    // 3. Detect the document TYPE from the retrieved content, so the agent
+    //    frames its answer for the right domain (resume vs financial vs
+    //    legal vs technical...) without changing the grounded facts.
+    const docType = classifyDocument(chunks.map((c) => c.text).join(' '));
+
+    // 4. Build prompt + 5. Generate
+    const prompt = buildPrompt(question, chunks, role, docType);
     const text = await this.provider.chat(prompt);
 
     // 5. Citations (auditability requirement)

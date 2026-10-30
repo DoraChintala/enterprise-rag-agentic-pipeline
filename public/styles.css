@@ -256,6 +256,37 @@ body {
   font-size: 1.2rem;
 }
 
+.attach-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.15rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  line-height: 1;
+}
+
+.attach-btn:hover {
+  background: var(--panel-alt);
+}
+
+.search-upload-status {
+  max-width: 560px;
+  margin: 0.6rem auto 0;
+  font-size: 0.82rem;
+  min-height: 1.1em;
+  color: var(--muted);
+  text-align: center;
+}
+
+.search-upload-status.ok {
+  color: var(--ok);
+}
+
+.search-upload-status.err {
+  color: var(--err);
+}
+
 #question {
   flex: 1;
   border: none;

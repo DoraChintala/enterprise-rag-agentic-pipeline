@@ -353,8 +353,58 @@ async function uploadFile(file) {
   }
 }
 
+// ---------- Search-bar upload (paperclip) ----------
+function wireSearchUpload() {
+  const btn = $('attach-btn');
+  const input = $('search-file-input');
+  if (!btn || !input) return;
+
+  btn.addEventListener('click', () => input.click());
+  input.addEventListener('change', () => {
+    if (input.files && input.files[0]) uploadFromSearch(input.files[0]);
+    input.value = ''; // allow re-selecting the same file
+  });
+}
+
+async function uploadFromSearch(file) {
+  const status = $('search-upload-status');
+  status.textContent = `Uploading "${file.name}"…`;
+  status.className = 'search-upload-status';
+
+  const form = new FormData();
+  form.append('file', file);
+
+  try {
+    const res = await fetch('/upload', { method: 'POST', body: form });
+    const body = await res.json().catch(() => ({}));
+
+    if (res.status === 201) {
+      status.textContent = `Added "${file.name}" (${body.chunks} chunk${
+        body.chunks === 1 ? '' : 's'
+      }). Now ask a question about it.`;
+      status.className = 'search-upload-status ok';
+      state.docs.unshift({
+        source: file.name,
+        chunks: body.chunks,
+        docId: body.docId,
+      });
+      renderDocs();
+      $('question').focus();
+    } else {
+      status.textContent = body.error
+        ? `Upload failed: ${body.error}`
+        : 'Upload failed.';
+      status.className = 'search-upload-status err';
+    }
+  } catch {
+    status.textContent = 'Upload failed (network error).';
+    status.className = 'search-upload-status err';
+  }
+}
+
 // ---------- Init ----------
 applyUser();
 wireLogout();
 wireUpload();
+wireSearchUpload();
 checkHealth();
