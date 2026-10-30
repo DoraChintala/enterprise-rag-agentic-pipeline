@@ -145,3 +145,47 @@ Two more platform capabilities are now implemented (`src/agents/`):
 | Formal tool registry / SDK | planned |
 | Eval-gated safe rollout | planned |
 | Identity scopes | partial (role) |
+
+---
+
+## Update — Identity/Permissioning + Cost Governance (shipped)
+
+Two more platform capabilities are now implemented (`src/agents/`):
+
+### Identity & permissioning (`identity.ts`)
+- An `Identity` = principal + role + **scopes** (allowed tools, e.g.
+  `tool:rag`, `tool:planner`, or `tool:*`).
+- `isAllowed(identity, tool)` is checked BEFORE every tool call in the
+  orchestrator. Unauthorized calls are **blocked** and recorded in the
+  trajectory with `guardrail: 'block'`.
+- Example: a Compliance Officer has only `tool:rag` — the planner (and thus
+  multi-step execution) is denied; an Analyst has `planner` + `rag`; a Tech
+  Lead has `tool:*`.
+- This is real enforcement, not cosmetic role framing.
+
+### Cost governance (`cost.ts`)
+- `CostMeter` estimates tokens (~4 chars/token) and cost per run, and
+  enforces a per-run **budget** (`maxSteps`, `maxTokens`).
+- If the next step would exceed the budget, the run **stops** — preventing
+  runaway/looping agents from unbounded spend.
+- Every `/agent` response includes a `cost` summary
+  (`steps`, `tokens`, `estimatedCostUsd`) and a `blocked` list.
+
+### Why this matches the platform requirement
+- "identity and permissioning that lets them act safely" → scope checks per
+  tool call, blocked actions recorded.
+- "cost governance for LLM and agent workloads" → per-run token/cost
+  tracking + budget enforcement.
+
+### Status (updated)
+| Component | Status |
+| --- | --- |
+| RAG as a capability | done |
+| Agent orchestrator (plan → tool → observe) | done |
+| Evaluation loop | done |
+| Trajectory capture | done |
+| Cross-run memory | done |
+| **Identity & permissioning (scope enforcement)** | **done** |
+| **Cost governance (budget + tracking)** | **done** |
+| Formal tool registry / SDK | planned |
+| Eval-gated safe rollout | planned |

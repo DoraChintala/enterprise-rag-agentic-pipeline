@@ -114,7 +114,7 @@ export async function buildApp(deps: {
     if (!parsed.success) {
       return reply.status(400).send({ error: parsed.error.flatten() });
     }
-    const answer = await agent.run(parsed.data.question);
+    const answer = await agent.run(parsed.data.question, parsed.data.role);
     return reply.send(answer);
   });
 

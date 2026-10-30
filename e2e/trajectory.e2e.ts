@@ -51,4 +51,26 @@ describe('E2E: trajectory capture + cross-run memory', () => {
     const res = await getJson(server.baseUrl, '/trajectory/does-not-exist');
     expect(res.status).toBe(404);
   });
+
+  it('reports cost governance on every agent run', async () => {
+    const res = await postJson(server.baseUrl, '/agent', {
+      question: 'What was Acme revenue?',
+    });
+    expect(res.status).toBe(200);
+    expect(res.body.cost).toBeTruthy();
+    expect(typeof res.body.cost.tokens).toBe('number');
+    expect(typeof res.body.cost.estimatedCostUsd).toBe('number');
+    expect(Array.isArray(res.body.blocked)).toBe(true);
+  });
+
+  it('enforces permissioning: Compliance Officer cannot use the planner', async () => {
+    const res = await postJson(server.baseUrl, '/agent', {
+      question: 'Acme revenue compare Globex revenue', // would multi-step
+      role: 'Compliance Officer',
+    });
+    expect(res.status).toBe(200);
+    // planner is blocked -> only a single step runs, planner is in "blocked"
+    expect(res.body.blocked).toContain('planner');
+    expect(res.body.steps.length).toBe(1);
+  });
 });
