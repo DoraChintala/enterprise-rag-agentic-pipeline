@@ -18,6 +18,7 @@
         <span class="tag">Agentic AI Platform</span>
       </div>
       <div class="nav-links">
+        <a class="btn btn-ghost" href="#story">Story</a>
         <a class="btn btn-ghost" href="#metrics">Results</a>
         <a
           class="btn btn-primary"
@@ -84,6 +85,65 @@
             <li>Answers only from context — cites every claim</li>
             <li>Captures a replayable trace of each run</li>
           </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- The story (why I built it) -->
+    <section class="section" id="story">
+      <h2>The story behind it</h2>
+      <div class="story-arc">
+        <div class="arc-step">
+          <span class="arc-tag">CONTEXT</span>
+          <p>
+            Modernizing legacy mortgage systems, my team used LLMs and RAG to
+            extract business rules from 30+ legacy batch jobs.
+          </p>
+        </div>
+        <div class="arc-step">
+          <span class="arc-tag">PROBLEM</span>
+          <p>
+            I kept hitting the same wall: generic LLMs don't know your private
+            documents, they hallucinate numbers, and they can't cite sources.
+            In finance, a made-up number is a compliance risk — not just a bug.
+          </p>
+        </div>
+        <div class="arc-step">
+          <span class="arc-tag">APPROACH</span>
+          <p>
+            So I built an agentic RAG platform on one principle: answer only
+            from your documents, cite every claim, and know when it
+            <em>doesn't</em> have the answer.
+          </p>
+        </div>
+        <div class="arc-step">
+          <span class="arc-tag">WHAT I BUILT</span>
+          <p>
+            RAG retrieval, an agent layer that plans and calls tools, and
+            grounding so it answers only from context — plus the parts I'm
+            proudest of: an evaluation loop that measures accuracy and
+            groundedness, replayable trajectory capture, cross-run memory,
+            permissioning that blocks unauthorized tool calls, and cost
+            budgets that stop runaway agents.
+          </p>
+        </div>
+        <div class="arc-step">
+          <span class="arc-tag">RESULT</span>
+          <p>
+            100% grounded on the eval suite with sub-second retrieval, 38
+            passing tests, deployed live with Docker and CI/CD. Most
+            importantly, it refuses to answer when it has no source — which is
+            the whole point.
+          </p>
+        </div>
+        <div class="arc-step highlight">
+          <span class="arc-tag">THE LESSON</span>
+          <p>
+            Trustworthy AI isn't the model that always answers. It's the
+            system that answers only when it should, and proves where the
+            answer came from. The engineering <em>around</em> the model
+            matters more than the model.
+          </p>
         </div>
       </div>
     </section>
